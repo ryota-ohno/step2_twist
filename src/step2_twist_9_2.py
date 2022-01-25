@@ -32,7 +32,7 @@ def init_process(args):
         init_params_csv = os.path.join(auto_dir, 'step2_twist_init_params.csv')
         
         init_para_list = []
-        A1_list =[0]; A2_list = [-2,-4,-6,-8,-10,-12,-14,-16,-18]
+        A1_list =[2,4,6,8,-4,-2]; A2_list = [-6]
 #        A1_list = [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20]; A2_list = [33]##A1がねじれ(映進面に垂直)　A2が長軸ずれ(映進面に平行)
 #        A1_list =[0,-2,-4,-6]; A2_list = [14,12,10]
         
@@ -92,7 +92,7 @@ def listen(args):
     df_queue = df_E.loc[df_E['status']=='InProgress',['machine_type','file_name']]
     machine_type_list = df_queue['machine_type'].values.tolist()
     len_queue = len(df_queue)
-    maxnum_machine2 = 3#num_nodes/2 if num_nodes%2==0 else (num_nodes+1)/2
+    maxnum_machine2 = 1#num_nodes/2 if num_nodes%2==0 else (num_nodes+1)/2
     
     for idx,row in zip(df_queue.index,df_queue.values):
         machine_type,file_name = row
