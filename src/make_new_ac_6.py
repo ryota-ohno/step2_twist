@@ -161,7 +161,7 @@ def make_gaussview_xyz(auto_dir,monomer_name,params_dict,isInterlayer=False):
 def make_gjf_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlayer):
     a_ = params_dict['a']; b_ = params_dict['b']; c = np.array([params_dict['cx'],params_dict['cy'],params_dict['cz']])
     A1 = params_dict['A1']; A2 = params_dict['A2']; A3 = params_dict['theta']
-    phi1 = params_dict.get('phi1',0.0); phi2 = -phi1
+    phi1 = params_dict.get('phi',0.0); phi2 = -phi1
     print(phi1, phi2)
     
     monomer_array_i = get_monomer_xyzR(monomer_name,0,0,0,A1,A2,A3, phi1)
