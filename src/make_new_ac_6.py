@@ -45,6 +45,27 @@ def get_monomer_xyzR(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi=0.0,isFF=False):
         else:
             return np.concatenate([xyz_array,R_array],axis=1)
     
+    elif monomer_name=='mono-C4-BTBT':
+        #alkylの基準
+        C0_index = 13 #BTBT骨格の端
+        C1_index = 23 #アルキルの根本
+        
+        C0=xyz_array[C0_index]
+        C1=xyz_array[C1_index]
+        
+        #phi1に関するalkylの軸
+        n1=C1-C0
+        n1/=np.linalg.norm(n1)
+        
+        #alkyl回転・分子1作成
+        xyz_array[C1_index:] = np.matmul((xyz_array[C1_index:]-C0),Rod(n1,phi).T) + C0
+        
+        if isFF:
+            FFconfig_array=df_mono[['q','sig','eps']].values
+            return np.concatenate([xyz_array,R_array,FFconfig_array],axis=1)
+        else:
+            return np.concatenate([xyz_array,R_array],axis=1)
+    
     else:
         raise RuntimeError('invalid monomer_name={}'.format(monomer_name))
         
@@ -220,6 +241,8 @@ def make_gjf_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlayer):
     elif monomer_name in MONOMER_LIST and isInterlayer:
         gij_xyz_lines = ['$ RunGauss\n'] + line_list_dimer_i0 + ['\n\n--Link1--\n'] + line_list_dimer_ip1+ ['\n\n--Link1--\n'] + line_list_dimer_ip2+ ['\n\n--Link1--\n'] + line_list_dimer_it1 + ['\n\n--Link1--\n'] + line_list_dimer_it2 + ['\n\n\n']#['\n\n--Link1--\n'] + line_list_dimer_it3 + ['\n\n--Link1--\n'] + line_list_dimer_it4 + ['\n\n\n']
     elif monomer_name=='mono-C9-BTBT':
+        gij_xyz_lines = ['$ RunGauss\n'] + line_list_dimer_p1 + ['\n\n--Link1--\n'] + line_list_dimer_t1 + ['\n\n--Link1--\n'] + line_list_dimer_t3 + ['\n\n\n']#+ ['\n\n--Link1--\n'] + line_list_dimer_t2 + ['\n\n--Link1--\n'] + line_list_dimer_t4 + ['\n\n\n']
+    elif monomer_name=='mono-C4-BTBT':
         gij_xyz_lines = ['$ RunGauss\n'] + line_list_dimer_p1 + ['\n\n--Link1--\n'] + line_list_dimer_t1 + ['\n\n--Link1--\n'] + line_list_dimer_t3 + ['\n\n\n']#+ ['\n\n--Link1--\n'] + line_list_dimer_t2 + ['\n\n--Link1--\n'] + line_list_dimer_t4 + ['\n\n\n']
     
     file_name = get_file_name_from_dict(monomer_name,params_dict)
