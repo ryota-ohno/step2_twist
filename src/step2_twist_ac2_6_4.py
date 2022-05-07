@@ -199,7 +199,8 @@ def get_params_dict(auto_dir, num_nodes, fixed_param_keys, opt_param_keys):
 def get_opt_params_dict(df_cur, init_params_dict,fixed_params_dict):
     df_val = filter_df(df_cur, fixed_params_dict)
     b = init_params_dict['b']; a = init_params_dict['a']
-    A1_init_prev = init_params_dict['A1']; A2_init_prev = init_params_dict['A2']; A4_init_prev = init_params_dict['A4']; theta = init_params_dict['theta'];phi = init_params_dict['phi']
+    A1_init_prev = init_params_dict['A1']; A2_init_prev = init_params_dict['A2']
+    A4_init_prev = init_params_dict['A4']; theta = init_params_dict['theta'];phi = init_params_dict['phi']
     
     while True:
         E_list=[];heri_list=[]
@@ -219,7 +220,9 @@ def get_opt_params_dict(df_cur, init_params_dict,fixed_params_dict):
         if  A1_init==A1_init_prev and A2_init==A2_init_prev and A4_init==A4_init_prev :
             return True,{'A1':A1_init,'A2':A2_init,'A4':A4_init}
         else:
-            A1_init_prev=A1_init,A2_init_prev=A2_init,A4_init_prev=A4_init
+            A1_init_prev=A1_init
+            A2_init_prev=A2_init
+            A4_init_prev=A4_init
 
 def get_values_from_df(df,index,key):
     return df.loc[index,key]
@@ -233,10 +236,12 @@ def filter_df(df, dict_filter):
     for k, v in dict_filter.items():
         if type(v)==str:
             query.append('{} == "{}"'.format(k,v))
+            df=df[df[k]==v]
         else:
             query.append('{} == {}'.format(k,v))
-    df['A1']=df['A1'].astype(float)##df.queryのバグ
-    df_filtered = df.query(' and '.join(query))
+            df=df[df[k]==v]
+    query0=' and '.join(query)
+    df_filtered=df
     return df_filtered
 
 if __name__ == '__main__':
