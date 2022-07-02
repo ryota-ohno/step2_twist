@@ -78,7 +78,7 @@ def main_process(args):
     os.makedirs(os.path.join(auto_dir,'gaussview'), exist_ok=True)
     auto_csv_path = os.path.join(auto_dir,'step2_twist.csv')
     if not os.path.exists(auto_csv_path):        
-        df_E = pd.DataFrame(columns = ['a','b','theta','A1','A2','phi1','phib','E','E_p1','E_t1','E_t3','machine_type','status','file_name'])
+        df_E = pd.DataFrame(columns = ['Rt','Rp','a','b','theta','A1','A2','phi1','phib','E','E_p1','E_t1','E_t3','machine_type','status','file_name'])
         df_E.to_csv(auto_csv_path,index=False)
     
     os.chdir(os.path.join(args.auto_dir,'gaussian'))
